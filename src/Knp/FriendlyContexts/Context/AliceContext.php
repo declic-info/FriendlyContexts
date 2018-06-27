@@ -23,7 +23,6 @@ class AliceContext extends Context
 
         foreach ($files as $name) {
             if (!array_key_exists($name, $fixtures)) {
-
                 throw new \Exception(sprintf('Fixture "%s" unknown. "%s" expected', $name, implode('", "', array_keys($fixtures))));
             }
         }
@@ -35,9 +34,13 @@ class AliceContext extends Context
     protected function loadFixtures($loader, $fixtures, $files)
     {
         $persistable = $this->getPersistableClasses();
-        foreach ($loader->load($fixtures) as $object) {
-            if (in_array(get_class($object), $persistable)) {
-                $this->getEntityManager()->persist($object);
+        foreach ($fixtures as $id => $fixture) {
+            if (in_array($id, $files)) {
+                foreach ($loader->load($fixture) as $object) {
+                    if (in_array(get_class($object), $persistable)) {
+                        $this->getEntityManager()->persist($object);
+                    }
+                }
             }
         }
 

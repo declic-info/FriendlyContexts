@@ -56,7 +56,7 @@ class Loader extends BaseLoader
     public function __construct($locale, ProviderResolver $providers)
     {
         parent::__construct();
-        $this->loader = $this->createFilesLoader();
+        $this->loader = $this->createFileLoader();
         $this->dataLoader = $this->getDataLoader();
     }
 
@@ -81,7 +81,7 @@ class Loader extends BaseLoader
 
     public function load($filename)
     {
-        $this->fixtureData = $this->loader->loadFiles($filename)->getObjects();
+        $this->fixtureData = $this->loader->loadFile($filename)->getObjects();
         $this->fixtureSet = $this->dataLoader->fixtureSet;
 
         return $this->fixtureData;
